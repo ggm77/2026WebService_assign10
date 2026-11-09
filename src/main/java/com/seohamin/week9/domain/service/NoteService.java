@@ -69,7 +69,7 @@ public class NoteService {
         );
     }
 
-    @Transactional
+    // @Transactional
     public NoteResponse updateNote(
             final NoteRequest noteRequest,
             final Long id
@@ -97,7 +97,9 @@ public class NoteService {
         note.updateCategory(noteRequest.category());
         note.updateHashTag(noteRequest.hashTag());
 
-        return NoteResponse.of(note);
+        final Note savedNote = noteRepository.save(note);
+
+        return NoteResponse.of(savedNote);
     }
 
     public void deleteNote(final Long id) {
