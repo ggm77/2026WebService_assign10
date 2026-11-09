@@ -6,12 +6,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
-@Entity
+// Q2. 엔티티 어노테이션 때문에 엔티티 클래스는 데이터베이스 테이블에, 필드는 컬럼, 객체는 행 하나에 대응하게 된다.
+// @Table을 통해 이름을 지정할 수도 있다.
+@Entity // Q1. 이 클래스가 엔티티를 나타내는 클래스라고 JPA에게 알려주는 어노테이션
 @Table(name = "note_sql")
 @EntityListeners(AuditingEntityListener.class)
 public class Note {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Q1. 이 필드가 이 엔티티의 id (PK)라는 것을 알려주는 어노테이션
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Q1. 해당 컬럼에 AUTO INCREMENT를 적용하라고 전달하는 어노테이션이다.
     private Long id;
 
     @Column(length = 100, nullable = false)

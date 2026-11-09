@@ -45,6 +45,9 @@ public class NoteService {
                 noteRequest.hashTag()
         );
 
+        // Q7. save()를 호출하면 내부적으로 id가 null인지 확인해,
+        // 새로운 데이터인지 기존에 존재하는 데이터인지 판별하고 새로운 데이터라면 새로 생성,
+        // 기존에 있던 데이터라면 해당 데이터에 덮어쓴다.
         final Note savedNote = noteRepository.save(note);
 
         return NoteResponse.of(savedNote);
@@ -69,6 +72,9 @@ public class NoteService {
         );
     }
 
+    // Q8. @Transactional이 달려있다면 해당 메서드 내에서 DB관련 작업이 하나의 트랜잭션으로 묶이게 되고,
+    // 그 결과 트랜잭션이 커밋될 때 최초 상태와 최종 상태를 비교하며 변경 되었다면 UPDATE 쿼리를 날리는게 더티 체킹이다.
+    // 그래서 더티 체킹을 한다면 save()가 없어도 반영 된다.
     // @Transactional
     public NoteResponse updateNote(
             final NoteRequest noteRequest,
@@ -97,6 +103,9 @@ public class NoteService {
         note.updateCategory(noteRequest.category());
         note.updateHashTag(noteRequest.hashTag());
 
+        // Q7. save()를 호출하면 내부적으로 id가 null인지 확인해,
+        // 새로운 데이터인지 기존에 존재하는 데이터인지 판별하고 새로운 데이터라면 새로 생성,
+        // 기존에 있던 데이터라면 해당 데이터에 덮어쓴다.
         final Note savedNote = noteRepository.save(note);
 
         return NoteResponse.of(savedNote);
