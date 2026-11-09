@@ -2,6 +2,7 @@ package com.seohamin.week9.domain.model;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
@@ -34,6 +35,10 @@ public class Note {
     @CreatedDate
     @Column(nullable = false)
     private Instant createdAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private Instant updatedAt;
 
     public Note(
             final String title,
@@ -78,6 +83,10 @@ public class Note {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
     public void updateTitle(final String title) {
