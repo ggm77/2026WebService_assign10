@@ -20,6 +20,28 @@ public class NoteController {
         this.noteService = noteService;
     }
 
+    @GetMapping("/notes/search/title")
+    public ResponseEntity<List<NoteResponse>> searchByTitle(
+            @RequestParam(required = false) final String keyword
+    ) {
+        return ResponseEntity.ok().body(noteService.searchByTitle(keyword));
+    }
+
+    @GetMapping("/notes/search/author")
+    public ResponseEntity<List<NoteResponse>> searchByAuthorAndCategory(
+            @RequestParam(required = false) final String author,
+            @RequestParam(required = false) final String category
+    ) {
+        return ResponseEntity.ok().body(noteService.searchByAuthorAndCategory(author, category));
+    }
+
+    @GetMapping("/notes/search/category")
+    public ResponseEntity<List<NoteResponse>> searchByCategoryDesc(
+            @RequestParam(required = false) final String category
+    ) {
+        return ResponseEntity.ok().body(noteService.searchByCategoryDesc(category));
+    }
+
     @PostMapping("/notes")
     public ResponseEntity<NoteResponse> createNote(
             @RequestBody final NoteRequest noteRequest

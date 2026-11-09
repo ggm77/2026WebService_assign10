@@ -3,6 +3,8 @@ package com.seohamin.week9.domain.repository;
 import com.seohamin.week9.domain.model.Note;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 // Q3. JpaRepository에는 데이터베이스 테이블과 매핑할 엔티티와, 그 엔티티의 PK값의 타입을 적어야한다. 처음 적는게 엔티티, 뒤에 적는게 PK의 타입이다.
 public interface NoteRepository extends JpaRepository<Note, Long> {
     /*
@@ -36,5 +38,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     // JpaRepository에서 기본 제공하는 메서드들은 모든 엔티티에 공통인 PK, 전체기준 CRUD이고,
     // 개발자가 직접 작성하는 Query Method는 엔티티의 특정 필드 기준으로 쿼리를 날릴 수 있다.
     // 또한 Query Method는 메서드명만 규칙에 맞게 선언하면 JPA가 알아서 SQL을 작성한다.
-
+    List<Note> findByTitleContainingIgnoreCase(final String keyword);
+    List<Note> findByAuthorAndCategory(final String author, final String category);
+    List<Note> findByCategoryOrderByCreatedAtDesc(final String category);
 }

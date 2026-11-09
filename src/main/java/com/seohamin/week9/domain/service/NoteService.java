@@ -23,6 +23,51 @@ public class NoteService {
         this.noteRepository = noteRepository;
     }
 
+    public List<NoteResponse> searchByTitle(final String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            throw new CustomException(ExceptionCode.INVALID_REQUEST);
+        }
+
+        return new ArrayList<>(
+                noteRepository.findByTitleContainingIgnoreCase(keyword)
+                        .stream()
+                        .map(NoteResponse::of)
+                        .toList()
+        );
+    }
+
+    public List<NoteResponse> searchByCategoryDesc(final String category) {
+        if (category == null || category.isBlank()) {
+            throw new CustomException(ExceptionCode.INVALID_REQUEST);
+        }
+
+        return new ArrayList<>(
+                noteRepository.findByCategoryOrderByCreatedAtDesc(category)
+                        .stream()
+                        .map(NoteResponse::of)
+                        .toList()
+        );
+    }
+
+    public List<NoteResponse> searchByAuthorAndCategory(
+            final String author,
+            final String category
+    ){
+        if (
+                author == null || author.isBlank()
+                || category == null || category.isBlank()
+        ) {
+            throw new CustomException(ExceptionCode.INVALID_REQUEST);
+        }
+
+        return new ArrayList<>(
+                noteRepository.findByAuthorAndCategory(author, category)
+                        .stream()
+                        .map(NoteResponse::of)
+                        .toList()
+        );
+    }
+
     public NoteResponse noteCreate(
             final NoteRequest noteRequest
     ) {
