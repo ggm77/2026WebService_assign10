@@ -129,6 +129,8 @@ private Instant updatedAt;
 
 DB에 저장된 시간은 UTC라서 한국 시간보다 9시간 느리게 나옵니다.
 
+**직접 입력하지 않아도 자동으로 기록 되는 이유** - `@EnableJpaAuditing`로 Auditing을 켰기 때문에 `AuditingEntityListener`가 `@PrePersist`와 `@PreUpdate`를 통해 자동으로 `createdAt`과 `updatedAt`이 바뀝니다. `@PrePersist` 때는 둘 다 값이 바뀌고, `@PreUpdate` 때는 `updatedAt`만 바뀝니다.
+
 ## ③ Weekly Review
 
 ### Key Learning: 새롭게 배운 내용 2~3가지
@@ -137,7 +139,7 @@ DB에 저장된 시간은 UTC라서 한국 시간보다 9시간 느리게 나옵
 - 어노테이션만 붙이면 생성 시간이랑 수정 시간이 자동으로 들어가서, 시간을 직접 넣는 코드를 안 써도 돼서 편했습니다.
 
 ### Problem & Solution: 어려웠던 점과 해결 방법
-처음에 코드를 다 작성하고 배포 했을 때 모든 API에서 500 INTERNAL SERVER ERROR가 떴었습니다. 그래서 실제 로그를 뒤져보니 SQL문이 제대로 동작하지 않고 있다는걸 알게 되었습니다. 알고 보니 `updatedAt` 컬럼을 엔티티에 추가했고, `@LastModifiedDate`까지 달았는데 이게 `ddl-auto: update`에서 적절히 처리하지 못해 이런 문제가 생겼었습니다.
+처음에 코드를 다 작성하고 배포 했을 때 모든 API에서 500 INTERNAL SERVER ERROR가 떴었습니다. 그래서 실제 로그를 뒤져보니 SQL문이 제대로 동작하지 않고 있다는걸 알게 되었습니다. 알고 보니 `updatedAt` 컬럼을 엔티티에 추가했고, `@LastModifiedDate`까지 달았는데 이게 `ddl-auto: update`에서 데이터가 존재하는 테이블에 NOT NULL 컬럼을 추가하지 못해 이런 문제가 생겼었습니다.
 그래서 `ddl-auto: create`로 한번 프로젝트를 실행하여 테이블을 전부 날리고 다시 `ddl-auto: update`로 실행해서 테이블을 다시 만들었습니다.
 
 ### Reflection: 이번 과제를 통해 느낀 점
